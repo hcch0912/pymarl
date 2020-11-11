@@ -11,6 +11,7 @@ class GridEnv(MultiAgentEnv):
         elif args["env_name"] == "Switch4-v0":
             self.n_agents = 4
     def step(self, actions):
+        print("in step")
         return self.env.actions()
 
     def get_obs(self):
@@ -31,7 +32,7 @@ class GridEnv(MultiAgentEnv):
 
     def get_state_size(self):
         """ Returns the shape of the state"""
-        return self.env.observation_space._agents_observation_space[0].shape
+        return self.env.observation_space._agents_observation_space[0].shape * self.n_agents
 
     def get_avail_actions(self):
        	return [self.get_avail_agent_actions(i) for i in range(self.n_agents)]
