@@ -3,7 +3,7 @@ import gym
 import ma_gym
 
 class GridEnv(MultiAgentEnv):
-    def __init__(self, args):
+    def __init__(self, **args):
         self.env = gym.make(args["env_name"])
 
     def step(self, actions):
