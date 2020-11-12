@@ -8,9 +8,8 @@ class BasicMAC:
     def __init__(self, scheme, groups, args):
         self.n_agents = args.n_agents
         self.args = args
-        #input_shape = self._get_input_shape(scheme)
+        input_shape = self._get_input_shape(scheme)
         
-        input_shape = (11)
         self._build_agents(input_shape)
         self.agent_output_type = args.agent_output_type
 
@@ -94,10 +93,10 @@ class BasicMAC:
         return inputs
 
     def _get_input_shape(self, scheme):
-        input_shape = scheme["obs"]["vshape"]
+        input_shape = list(scheme["obs"]["vshape"])
         if self.args.obs_last_action:
-            input_shape += scheme["actions_onehot"]["vshape"][0]
+            input_shape[0] += scheme["actions_onehot"]["vshape"][0]
         if self.args.obs_agent_id:
-            input_shape += self.n_agents
-
-        return input_shape
+             
+            input_shape[0] += self.n_agents
+        return (input_shape[0])

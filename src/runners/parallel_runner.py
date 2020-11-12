@@ -247,7 +247,7 @@ def env_worker(remote, env_fn):
         elif cmd == "get_env_info":
             remote.send(env.get_env_info())
         elif cmd == "get_stats":
-            remote.send(env.get_stats())
+            pass #remote.send(env.get_stats())
         else:
             raise NotImplementedError
 

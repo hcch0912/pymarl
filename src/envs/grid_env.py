@@ -1,10 +1,13 @@
 from envs.multiagentenv import MultiAgentEnv
 import gym 
 import ma_gym
+import numpy as np 
+
 
 class GridEnv(MultiAgentEnv):
     def __init__(self, **args):
         self.env = gym.make(args["env_name"])
+        print("init env") 
         self.episode_limit = 1000
         if args["env_name"] == "Checkers-v0":
             self.n_agents = 2 
@@ -12,8 +15,8 @@ class GridEnv(MultiAgentEnv):
             self.n_agents = 4
     def step(self, actions):
         print("in step")
-        return self.env.actions()
-
+        obs, reward, done, info = self.env.step(actions)
+        return np.sum(reward), done, info
     def get_obs(self):
         """ Returns all agent observations in a list """
         return self.env.get_agent_obs()
@@ -24,6 +27,7 @@ class GridEnv(MultiAgentEnv):
         return self.env.get_agent_obs()
 
     def get_obs_size(self):
+        print(self.env.observation_space._agents_observation_space[0].shape)
         """ Returns the shape of the observation """
         return self.env.observation_space._agents_observation_space[0].shape
 
@@ -31,9 +35,10 @@ class GridEnv(MultiAgentEnv):
         return self.env.get_agent_obs()
 
     def get_state_size(self):
+        print(self.env.observation_space._agents_observation_space[0].shape * self.n_agents)
         """ Returns the shape of the state"""
-        return self.env.observation_space._agents_observation_space[0].shape * self.n_agents
-
+        #return self.env.observation_space._agents_observation_space[0].shape * self.n_agents
+        return (self.n_agents, self.env.observation_space._agents_observation_space[0].shape[0]) 
     def get_avail_actions(self):
        	return [self.get_avail_agent_actions(i) for i in range(self.n_agents)]
 
@@ -48,6 +53,7 @@ class GridEnv(MultiAgentEnv):
 
     def reset(self):
         """ Returns initial observations and states"""
+        print("in reset")
         return self.env.reset()
 
     def render(self):
